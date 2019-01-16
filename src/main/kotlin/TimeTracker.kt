@@ -17,16 +17,19 @@ class TimeTracker(toolWindow: ToolWindow) {
     init {
         initTimer()
         startButton!!.isVisible = false
+
         startButton!!.addActionListener {
             initTimer()
             pauseButton!!.isVisible = true
             startButton!!.isVisible = false
         }
+
         pauseButton!!.addActionListener {
             timer!!.cancel()
             startButton!!.isVisible = true
             pauseButton!!.isVisible = false
         }
+
         resetButton!!.addActionListener {
             timer!!.cancel()
             startButton!!.isVisible = true
