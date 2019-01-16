@@ -15,8 +15,12 @@ class TimeTracker(toolWindow: ToolWindow) {
 
     private fun updateTracker() {
         val timeElapsed = (Date().time - startTime) / 1000
-        val elapsedString =
-            (timeElapsed / 3600).toString().padStart(2, '0') + ":" +
+        var elapsedString =
+            if (timeElapsed / 3600 == 0.toLong())
+                ""
+            else
+                (timeElapsed / 3600).toString().padStart(2, '0')  + ":"
+        elapsedString +=
             (timeElapsed / 60 % 60).toString().padStart(2, '0') + ":" +
             (timeElapsed % 60).toString().padStart(2, '0')
         timeLabel!!.text = elapsedString
