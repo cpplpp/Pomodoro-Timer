@@ -1,18 +1,19 @@
 <idea-plugin>
     <id>org.default.timetracker</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <name>Time tracker</name>
+    <vendor email="dummy" url="dummy">Gleb</vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    Cool time tracker for cool guys with cool features
     ]]></description>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
     <depends>com.intellij.modules.lang</depends>
-    -->
+
+    <project-components>
+        <component>
+            <implementation-class>TimeTracker</implementation-class>
+        </component>
+    </project-components>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
