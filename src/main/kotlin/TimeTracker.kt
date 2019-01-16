@@ -2,15 +2,37 @@ import com.intellij.openapi.wm.*
 import java.util.*
 import java.util.Timer
 import javax.swing.*
-import kotlin.concurrent.timerTask
+import kotlin.concurrent.fixedRateTimer
 
 class TimeTracker(toolWindow: ToolWindow) {
     private var contentPanel: JPanel? = null
     private var timeLabel: JLabel? = null
+    private var startButton: JButton? = null
+    private var pauseButton: JButton? = null
+    private var stopButton: JButton? = null
+
     private var startTime: Long = Date().time
+    private var timer: Timer? = null
 
     init {
-        Timer().scheduleAtFixedRate(timerTask { updateTracker() }, 0, 250)
+        initTimer()
+        startButton!!.addActionListener {
+            initTimer()
+            pauseButton!!.isVisible = true
+            startButton!!.isVisible = false
+        }
+        pauseButton!!.addActionListener {
+            timer!!.cancel()
+            startButton!!.isVisible = true
+            pauseButton!!.isVisible = false
+        }
+        stopButton!!.addActionListener {  }
+    }
+
+    private fun initTimer() {
+        timer = fixedRateTimer(name = "TimeTrackerTimer", period = 500) {
+            updateTracker()
+        }
     }
 
     private fun updateTracker() {
