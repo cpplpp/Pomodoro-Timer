@@ -10,12 +10,16 @@ class TimeTracker(toolWindow: ToolWindow) {
     private var startTime: Long = Date().time
 
     init {
-        Timer().scheduleAtFixedRate(timerTask { updateTracker() }, 0, 500)
+        Timer().scheduleAtFixedRate(timerTask { updateTracker() }, 0, 250)
     }
 
     private fun updateTracker() {
-        val timeElapsed = Date().time - startTime
-        timeLabel!!.text = Date(timeElapsed).toString()
+        val timeElapsed = (Date().time - startTime) / 1000
+        val elapsedString =
+            (timeElapsed / 3600).toString().padStart(2, '0') + ":" +
+            (timeElapsed / 60 % 60).toString().padStart(2, '0') + ":" +
+            (timeElapsed % 60).toString().padStart(2, '0')
+        timeLabel!!.text = elapsedString
     }
 
     fun getContent(): JPanel? {
