@@ -15,14 +15,13 @@ class TimeTracker(toolWindow: ToolWindow) {
 
     private fun updateTracker() {
         val timeElapsed = (Date().time - startTime) / 1000
-        var elapsedString =
-            if (timeElapsed / 3600 == 0.toLong())
-                ""
-            else
-                (timeElapsed / 3600).toString().padStart(2, '0')  + ":"
-        elapsedString +=
-            (timeElapsed / 60 % 60).toString().padStart(2, '0') + ":" +
-            (timeElapsed % 60).toString().padStart(2, '0')
+        val hours = timeElapsed / 3600
+        val minutes = timeElapsed / 60 % 60
+        val seconds = timeElapsed % 60
+        val elapsedString = when (hours) {
+            0.toLong() -> "Time elapsed: %02d:%02d".format(minutes, seconds)
+            else -> "Time elapsed: %d:%02d:%02d".format(hours, minutes, seconds)
+        }
         timeLabel!!.text = elapsedString
     }
 
