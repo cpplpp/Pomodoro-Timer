@@ -9,14 +9,8 @@
 
     <depends>com.intellij.modules.lang</depends>
 
-    <project-components>
-        <component>
-            <implementation-class>TimeTracker</implementation-class>
-        </component>
-    </project-components>
-
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <toolWindow id="Time tracker" anchor="right" factoryClass="TimeTracker"/>
     </extensions>
 
     <actions>
