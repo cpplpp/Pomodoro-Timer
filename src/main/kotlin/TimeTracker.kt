@@ -1,3 +1,6 @@
+import com.intellij.notification.Notification
+import com.intellij.notification.NotificationType
+import com.intellij.notification.Notifications
 import com.intellij.openapi.wm.*
 import java.util.Timer
 import javax.swing.*
@@ -55,6 +58,15 @@ class TimeTracker(toolWindow: ToolWindow) {
             0.toLong() -> "Time elapsed: %02d:%02d".format(minutes, seconds)
             else -> "Time elapsed: %d:%02d:%02d".format(hours, minutes, seconds)
         }
+        if (timeElapsed % (30 * 60 * 1000) == 0.toLong())
+            Notifications.Bus.notify(
+                Notification(
+                    "TimeTracker",
+                    "Time tracker",
+                    "You have spent another half of an hour. Please relax for a moment :)",
+                    NotificationType.INFORMATION
+                )
+            )
         timeLabel!!.text = elapsedString
     }
 
