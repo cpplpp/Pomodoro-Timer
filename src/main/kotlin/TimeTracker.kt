@@ -1,11 +1,12 @@
 import com.intellij.icons.AllIcons
 import com.intellij.notification.Notification
-import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
+import com.intellij.notification.NotificationType
 import com.intellij.openapi.wm.*
 import java.util.Timer
 import javax.swing.*
 import kotlin.concurrent.fixedRateTimer
+
 
 class TimeTracker(toolWindow: ToolWindow) {
     private var contentPanel: JPanel? = null
@@ -14,8 +15,13 @@ class TimeTracker(toolWindow: ToolWindow) {
     private var pauseButton: JButton? = null
     private var resetButton: JButton? = null
 
-    private var timeElapsed: Long = 0
     private val period: Long = 250
+
+    private val workingPeriod: Long = 25 * 60 * 1000 + period
+    private val relaxPeriod: Long = 5 * 60 * 1000 + period
+    private var isRelaxing = false
+
+    private var timeRemained: Long = workingPeriod
     private var timer: Timer? = null
 
     init {
@@ -42,7 +48,7 @@ class TimeTracker(toolWindow: ToolWindow) {
             timer!!.cancel()
             startButton!!.isVisible = true
             pauseButton!!.isVisible = false
-            timeElapsed = 0
+            timeRemained = workingPeriod
             updateTracker()
         }
     }
@@ -54,14 +60,20 @@ class TimeTracker(toolWindow: ToolWindow) {
     }
 
     private fun updateTracker() {
-        timeElapsed += period
-        val timeInSec = timeElapsed / 1000
+        timeRemained -= period
+        val timeInSec = timeRemained / 1000
         val hours = timeInSec / 3600
         val minutes = timeInSec / 60 % 60
         val seconds = timeInSec % 60
-        val elapsedString = when (hours) {
-            0.toLong() -> "Time elapsed: %02d:%02d".format(minutes, seconds)
-            else -> "Time elapsed: %d:%02d:%02d".format(hours, minutes, seconds)
+        var changed = false
+
+        if (timeRemained == 0.toLong()) {
+            isRelaxing = !isRelaxing
+            changed = true
+            timeRemained = if (isRelaxing)
+                relaxPeriod
+            else
+                workingPeriod
         }
 
         var notification =
@@ -80,8 +92,14 @@ class TimeTracker(toolWindow: ToolWindow) {
                 NotificationType.WARNING
             )
 
-        if (timeElapsed % (30 * 60 * 1000) == 0.toLong())
+        val elapsedString = when (hours) {
+            0.toLong() -> "Time remained: %02d:%02d".format(minutes, seconds)
+            else -> "Time remained: %d:%02d:%02d".format(hours, minutes, seconds)
+        }
+
+        if (changed) {
             Notifications.Bus.notify(notification)
+        }
         timeLabel!!.text = elapsedString
     }
 
