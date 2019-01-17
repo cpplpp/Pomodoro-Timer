@@ -1,3 +1,4 @@
+import com.intellij.icons.AllIcons
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
@@ -18,6 +19,10 @@ class TimeTracker(toolWindow: ToolWindow) {
     private var timer: Timer? = null
 
     init {
+        startButton!!.icon = AllIcons.Actions.Execute
+        pauseButton!!.icon = AllIcons.Actions.Pause
+        resetButton!!.icon = AllIcons.Actions.Restart
+
         initTimer()
         startButton!!.isVisible = false
 
