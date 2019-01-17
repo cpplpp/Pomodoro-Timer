@@ -63,15 +63,25 @@ class TimeTracker(toolWindow: ToolWindow) {
             0.toLong() -> "Time elapsed: %02d:%02d".format(minutes, seconds)
             else -> "Time elapsed: %d:%02d:%02d".format(hours, minutes, seconds)
         }
-        if (timeElapsed % (30 * 60 * 1000) == 0.toLong())
-            Notifications.Bus.notify(
-                Notification(
-                    "TimeTracker",
-                    "Time tracker",
-                    "You have spent another half of an hour. Please relax for a moment :)",
-                    NotificationType.INFORMATION
-                )
+
+        var notification =
+            if (hours < 3)
+            Notification(
+                "TimeTracker",
+                "Time tracker",
+                "You have spent another half of an hour. Please relax for a moment ヽ(・∀・)ﾉ",
+                NotificationType.INFORMATION
             )
+            else
+            Notification(
+                "TimeTracker",
+                "Time tracker",
+                "You have spent three hours or more. We strongly suggest you to have a rest ( ╯°□°)╯ ┻━━┻",
+                NotificationType.WARNING
+            )
+
+        if (timeElapsed % (30 * 60 * 1000) == 0.toLong())
+            Notifications.Bus.notify(notification)
         timeLabel!!.text = elapsedString
     }
 
