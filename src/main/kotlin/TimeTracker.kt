@@ -77,19 +77,19 @@ class TimeTracker(toolWindow: ToolWindow) {
         }
 
         var notification =
-            if (hours < 3)
+            if (isRelaxing)
             Notification(
                 "TimeTracker",
-                "Time tracker",
-                "You have spent another half of an hour. Please relax for a moment ヽ(・∀・)ﾉ",
+                "Pomodoro tracker",
+                "You have spent 25 minutes. Now you should have a rest for 5 minutes",
                 NotificationType.INFORMATION
             )
             else
             Notification(
                 "TimeTracker",
-                "Time tracker",
-                "You have spent three hours or more. We strongly suggest you to have a rest ( ╯°□°)╯ ┻━━┻",
-                NotificationType.WARNING
+                "Pomodoro tracker",
+                "5 minutes have passed, now you can work again",
+                NotificationType.INFORMATION
             )
 
         val elapsedString = when (hours) {
